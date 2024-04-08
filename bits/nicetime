@@ -1,0 +1,37 @@
+#!/usr/local/bin/perl
+
+#require 'genlib.pl';
+
+@Months = ( 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
+    'Sep', 'Oct', 'Nov', 'Dec' );
+
+print &nicetime($ARGV[0]),"\n";
+exit 0;
+#
+# nicetime: give a nicer format to Unix raw time output
+#    output is basically:  Month Day Year hours: minutes: seconds
+#
+# Globals: Months
+sub
+nicetime
+{
+	local($tm)  = @_;
+	local($tsec,$tmin,$thour,$tmday,$tmon,$tyear,$twday,$tyday,$tdst);
+
+	if ( $tm == 0 ) {
+		return 'Never';
+	}
+	($tsec,$tmin,$thour,$tmday,$tmon,$tyear,$twday,$tyday,$tdst) = 
+	    localtime ($tm);
+	if ( $tmin < 10 ) {
+		$tmin  = '0' . $tmin;
+	}
+	if ( $tsec < 10 ) {
+		$tsec  = '0' . $tsec;
+	}
+#	return $Months[$tmon] . " $tmday 19${tyear} ${thour}:${tmin}:${tsec}";
+	$tyear += 1900;
+	sprintf("%s %s %s %2d:%-2.2d:%-2.2d",$Months[$tmon],$tmday,$tyear,
+	    $thour,$tmin,$tsec);
+}
+
